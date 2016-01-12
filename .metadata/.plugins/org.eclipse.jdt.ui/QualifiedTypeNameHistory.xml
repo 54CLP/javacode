@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.util.concurrent.locks.Lock"/>
+<fullyQualifiedTypeName name="MyService"/>
+<fullyQualifiedTypeName name="Ser"/>
+<fullyQualifiedTypeName name="java.util.concurrent.locks.Condition"/>
+<fullyQualifiedTypeName name="My2"/>
+<fullyQualifiedTypeName name="java.util.concurrent.locks.ReentrantLock"/>
+</qualifiedTypeNameHistroy>

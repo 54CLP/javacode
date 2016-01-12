@@ -1,0 +1,57 @@
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+public class Lock2 {
+public static void main(String[] args) {
+	
+}
+}
+class Ser{
+	private Lock lock=new ReentrantLock();
+	private Condition condition1=lock.newCondition();
+	private Condition condition2=lock.newCondition();
+	public void awaitA(){
+		try{
+			lock.lock();
+			System.out.println("begin awaitA "+Thread.currentThread().getName());
+			condition1.await();
+			System.out.println("end awaitA"+Thread.currentThread().getName());
+		}catch(InterruptedException e){
+			e.printStackTrace();
+		}finally{
+			lock.unlock();
+		}
+	}
+	public void awaitB(){
+		try{
+			lock.lock();
+			System.out.println("begin awaitA "+Thread.currentThread().getName());
+			condition2.await();
+			System.out.println("end awaitA"+Thread.currentThread().getName());
+		}catch(InterruptedException e){
+			e.printStackTrace();
+		}finally{
+			lock.unlock();
+		}
+	}
+	public void signal_A(){
+		try{
+			lock.lock();
+			System.out.println("begin signal_A "+Thread.currentThread().getName());
+			condition1.signalAll();
+			
+		}finally{
+			lock.unlock();
+		}
+	}
+}
+class Thread1 extends Thread{
+	Ser ser=new Ser();
+	public Thread1(Ser ser){
+		this.ser=ser;
+	}
+	public void run(){
+		ser.awaitA();
+		ser.awaitB();
+	}
+}

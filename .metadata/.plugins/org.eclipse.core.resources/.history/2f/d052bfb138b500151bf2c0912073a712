@@ -1,0 +1,40 @@
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Lock1 {
+	public static void main(String[] args) {
+		MyService service=new MyService();
+		Mythread a1=new Mythread(service);
+		Mythread a2=new Mythread(service);
+		Mythread a3=new Mythread(service);
+		a1.start();
+		a2.start();
+		a3.start();
+		
+		
+	}
+}
+class MyService{
+	private Lock lock=new ReentrantLock();
+	public void testMethod(){
+		try{
+			lock.lock();
+			for(int i=0;i<5;i++){
+			System.out.println("ThreadName="+Thread.currentThread().getName()+" "+(i+1));
+			}
+		}catch(InterruptedException e){
+			e.printStackTrace();
+		}
+		
+		lock.unlock();
+	}
+}
+class Mythread extends Thread{
+	private MyService service;
+	public Mythread(MyService service){
+		this.service=service;
+	}
+	public void run(){
+		service.testMethod();
+	}
+}

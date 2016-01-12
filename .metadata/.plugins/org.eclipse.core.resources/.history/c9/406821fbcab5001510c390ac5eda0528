@@ -1,0 +1,71 @@
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class CP1to1 {
+public static void main(String[] args) {
+	My2 te=new My2();
+	Thread12 dou=new Thread12(te);
+	Thread13 tre=new Thread13(te);
+	dou.start();
+	tre.start();
+	
+}
+}
+class My2{
+	private ReentrantLock lock=new ReentrantLock();
+	private Condition condition1=lock.newCondition();
+	private Condition condition2=lock.newCondition();
+	private boolean hasValue=false;
+	public void set_1(){
+		try{
+			lock.lock();
+			while(hasValue==true){
+				System.out.println("**");
+				condition2.await();
+			}
+			System.out.println("*");
+			hasValue=true;
+			condition1.signalAll();
+		}catch(InterruptedException e){
+			e.printStackTrace();
+		}finally{
+			lock.unlock();
+		}
+	}
+	
+	public void get_1(){
+		try{
+			lock.lock();
+			while(hasValue==false){
+				System.out.println("^^");
+				condition1.await();
+			}
+			System.out.println("^");
+			hasValue=false;
+			condition2.signalAll();
+		}catch(InterruptedException e){
+			e.printStackTrace();
+		}finally{
+			lock.unlock();
+		}
+	}
+	
+}
+class Thread12 extends Thread{
+	My2 te;
+	public Thread12(My2 te){
+		this.te=te;
+	}
+	public void run(){
+		te.set_1();
+	}
+}
+class Thread13 extends Thread{
+	My2 te;
+	public Thread13(My2 te){
+		this.te=te;
+	}
+	public void run(){
+		te.get_1();
+	}
+}
